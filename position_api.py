@@ -4,8 +4,10 @@
 from datetime import datetime
 from typing import List, Optional
 
+import httpx
 from pydantic import BaseModel
 
+test_position_uri = "https://surveillance-api.sit.altitudeangel.io/v1/position-reports"
 
 # Data Models
 
@@ -52,8 +54,8 @@ class Target(BaseModel):
 class PositionData(BaseModel):
     id: str  # Uniquely identifies this specific position report by the sender
     sourceTimeStamp: datetime  # Indicates when the position report was sent, according to the sensor clock, in UTC. # (IAT should be accounted for by the sensor)
-    target: Optional[Target]  # Contains identification details of the detected object
     position: GeographicPosition  # Contains the position of the detected object
+    target: Optional[Target]  # Contains identification details of the detected object
     altitudes: Optional[List[Height]]  # Contains one or more detected altitudes for the object
     groundVelocity: Optional[GeographicVector]  # Contains data for the speed (in m/s) and track of the object.
     trueAirspeed: Optional[GeographicVector]  # Contains information about the true airspeed (TAS) of the object
@@ -80,3 +82,27 @@ class SensorState(BaseModel):
 class PositionReport(BaseModel):
     sensor: Optional[SensorState]  # Metadata about the sensor device providing positions
     positions: List[PositionData]  # Collection of positions. Must not be empty
+
+
+# API Calls
+
+
+def send_position_report(access_token, position_report_data):
+    """
+    The API receives position reports which are processed asynchronously.
+
+    A position report consists of the following key pieces of data:
+
+    sensor metadata identifying the sensor for which data is submitted
+    One (or more) positions, which specify information about objects known, or visible, to the sensor
+
+    :param access_token: access token obtained by using auth_api.py
+    :param position_report_data: instance of the class PositionReport
+    :return:
+    """
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+    return httpx.post(test_position_uri, headers=headers, data=position_report_data)
+

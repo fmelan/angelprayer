@@ -3,10 +3,13 @@ from typing import Optional
 import httpx
 from pydantic import BaseModel, ValidationError
 
-from main import AngelError
+from errors import AngelError
 
 test_surveillance_base_uri = "https://surveillance-api.sit.altitudeangel.io"
 test_auth_base_uri = "https://auth.sit.altitudeangel.io"
+
+
+# Data Models
 
 
 class AccessTokensRequest(BaseModel):
@@ -37,23 +40,7 @@ class RefreshAccessTokenRequest(BaseModel):
     state: Optional[str]
 
 
-def access_api_call(request_data, req_class):
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-
-    try:
-        access_token_req = req_class(**request_data)
-    except ValidationError as e:
-        raise AngelError(e.json())
-
-    resp = httpx.post(f"{test_auth_base_uri}/oauth/v2/token", headers=headers, data=access_token_req.dict())
-
-    if resp.status_code != 200:
-        err = AngelError(resp.text)
-        err.status_code = resp.status_code
-        raise err
-
-    return AccessTokensResponse(**resp.json())
-
+# API Calls
 
 def get_access_token(client_id, client_secret, redirect_uri, device_id, state=None):
     """
@@ -99,3 +86,27 @@ def refresh_access_token(client_id, client_secret, refresh_token, state=None):
         request_data['state'] = state
 
     return access_api_call(request_data, RefreshAccessTokenRequest)
+
+
+def access_api_call(request_data, req_class):
+    """
+    Internal function for obtaining and refreshing access tokens. Should not be used outside this package.
+    :param request_data: request data
+    :param req_class: request class
+    :return:
+    """
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+
+    try:
+        access_token_req = req_class(**request_data)
+    except ValidationError as e:
+        raise AngelError(e.json())
+
+    resp = httpx.post(f"{test_auth_base_uri}/oauth/v2/token", headers=headers, data=access_token_req.dict())
+
+    if resp.status_code != 200:
+        err = AngelError(resp.text)
+        err.status_code = resp.status_code
+        raise err
+
+    return AccessTokensResponse(**resp.json())
