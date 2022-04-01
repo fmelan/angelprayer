@@ -1,3 +1,5 @@
+# https://docs.altitudeangel.com/docs/altitude-angel-identity-provider
+
 from typing import Optional
 
 import httpx
@@ -5,7 +7,6 @@ from pydantic import BaseModel, ValidationError
 
 from errors import AngelError
 
-test_surveillance_base_uri = "https://surveillance-api.sit.altitudeangel.io"
 test_auth_base_uri = "https://auth.sit.altitudeangel.io"
 
 

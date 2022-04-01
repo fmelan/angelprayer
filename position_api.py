@@ -1,5 +1,4 @@
-# TODO httpx async
-
+# https://docs.altitudeangel.com/docs/surveillance-api
 
 from datetime import datetime
 from typing import List, Optional
@@ -8,6 +7,7 @@ import httpx
 from pydantic import BaseModel
 
 test_position_uri = "https://surveillance-api.sit.altitudeangel.io/v1/position-reports"
+
 
 # Data Models
 
@@ -87,7 +87,7 @@ class PositionReport(BaseModel):
 # API Calls
 
 
-def send_position_report(access_token, position_report_data):
+def send_position_report(access_token, position_report):
     """
     The API receives position reports which are processed asynchronously.
 
@@ -97,12 +97,11 @@ def send_position_report(access_token, position_report_data):
     One (or more) positions, which specify information about objects known, or visible, to the sensor
 
     :param access_token: access token obtained by using auth_api.py
-    :param position_report_data: instance of the class PositionReport
+    :param position_report: instance of the class PositionReport
     :return:
     """
     headers = {
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {access_token}'
     }
-    return httpx.post(test_position_uri, headers=headers, data=position_report_data)
-
+    return httpx.post(test_position_uri, headers=headers, data=position_report.json(exclude_unset=True))
