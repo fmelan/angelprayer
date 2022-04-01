@@ -37,33 +37,11 @@ class RefreshAccessTokenRequest(BaseModel):
     state: Optional[str]
 
 
-def get_access_token(client_id, client_secret, redirect_uri, device_id, state=None):
-    """
-    Before this call, users must have pre-registered their local unique sensor IDs by creating a support ticket.
-    Function will call API to obtain standard OAuth v2 response with access_token and refresh_token. Both these
-    tokens will be returned by the function. The access_token should be then used to communicate with the
-    Surveillance API.
-    :return: tuple containing access_token and refresh_token
-    """
+def access_api_call(request_data, req_class):
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
-    # TODO common request calls in one method
-
-    request_data = {
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'grant_type': "client_credentials",
-        'scope': "surveillance_api",
-        'token_format': 'jwt',
-        'redirect_uri': redirect_uri,
-        'device_id': device_id
-    }
-
-    if state:
-        request_data['state'] = state
-
     try:
-        access_token_req = AccessTokensRequest(**request_data)
+        access_token_req = req_class(**request_data)
     except ValidationError as e:
         raise AngelError(e.json())
 
@@ -77,6 +55,29 @@ def get_access_token(client_id, client_secret, redirect_uri, device_id, state=No
     return AccessTokensResponse(**resp.json())
 
 
+def get_access_token(client_id, client_secret, redirect_uri, device_id, state=None):
+    """
+    Before this call, users must have pre-registered their local unique sensor IDs by creating a support ticket.
+    Function will call API to obtain standard OAuth v2 response with access_token and refresh_token. Both these
+    tokens will be returned by the function. The access_token should be then used to communicate with the
+    Surveillance API.
+    :return: tuple containing access_token and refresh_token
+    """
+    request_data = {
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'grant_type': "client_credentials",
+        'scope': "surveillance_api",
+        'token_format': 'jwt',
+        'redirect_uri': redirect_uri,
+        'device_id': device_id
+    }
+    if state:
+        request_data['state'] = state
+
+    return access_api_call(request_data, AccessTokensRequest)
+
+
 def refresh_access_token(client_id, client_secret, refresh_token, state=None):
     """
     For every request made to the Altitude Angel APIs with a bearer access token, you must check the response code for
@@ -88,28 +89,13 @@ def refresh_access_token(client_id, client_secret, refresh_token, state=None):
     in the same response code then an error should be returned to the user.
     :return:
     """
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-
     request_data = {
         'client_id': client_id,
         'client_secret': client_secret,
         'grant_type': "refresh_token",
         'refresh_token': refresh_token,
     }
-
     if state:
         request_data['state'] = state
 
-    try:
-        refresh_access_token_req = RefreshAccessTokenRequest(**request_data)
-    except ValidationError as e:
-        raise AngelError(e.json())
-
-    resp = httpx.post(f"{test_auth_base_uri}/oauth/v2/token", headers=headers, data=refresh_access_token_req.dict())
-
-    if resp.status_code != 200:
-        err = AngelError(resp.text)
-        err.status_code = resp.status_code
-        raise err
-
-    return AccessTokensResponse(**resp.json())
+    return access_api_call(request_data, RefreshAccessTokenRequest)
