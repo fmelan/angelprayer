@@ -63,7 +63,7 @@ def get_access_token(client_id, client_secret, redirect_uri, device_id, state=No
     if state:
         request_data['state'] = state
 
-    return access_api_call(request_data, AccessTokensRequest)
+    return _access_api_call(request_data, AccessTokensRequest)
 
 
 def refresh_access_token(client_id, client_secret, refresh_token, state=None):
@@ -86,10 +86,10 @@ def refresh_access_token(client_id, client_secret, refresh_token, state=None):
     if state:
         request_data['state'] = state
 
-    return access_api_call(request_data, RefreshAccessTokenRequest)
+    return _access_api_call(request_data, RefreshAccessTokenRequest)
 
 
-def access_api_call(request_data, req_class):
+def _access_api_call(request_data, req_class):
     """
     Internal function for obtaining and refreshing access tokens. Should not be used outside this package.
     :param request_data: request data
