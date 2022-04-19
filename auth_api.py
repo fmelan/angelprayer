@@ -12,7 +12,6 @@ test_auth_base_uri = "https://auth.sit.altitudeangel.io"
 
 # Data Models
 
-
 class AccessTokensRequest(BaseModel):
     client_id: str
     client_secret: str
@@ -28,7 +27,6 @@ class AccessTokensResponse(BaseModel):
     access_token: str
     token_type: str
     expires_in: int
-    refresh_token: str
     refresh_token: str
     state: Optional[str]
 
