@@ -104,7 +104,9 @@ def _access_api_call(request_data, req_class):
     try:
         access_token_req = req_class(**request_data)
     except ValidationError as e:
-        raise AngelError(e.json())
+        ae = AngelError(e.json())
+        ae.status_code = 400
+        raise ae
 
     resp = httpx.post(f"{test_auth_base_uri}/oauth/v2/token", headers=headers, data=access_token_req.dict())
 
