@@ -1,2 +1,4 @@
 pydantic
 httpx
+fastapi
+uvicorn[standard]

@@ -1,5 +1,7 @@
 import datetime
 
+from fastapi import FastAPI
+
 from auth_api import get_access_token
 from position_api import PositionData, GeographicPosition, send_position_report, Target, Identifier, Height, \
     GeographicVector, PositionReport
@@ -14,6 +16,14 @@ def get_test_tokens():
     }
 
     return get_access_token(**data)
+
+
+app = FastAPI()
+
+
+@app.get("/")
+def read_root():
+    return "Hello. This is Angel Prayer."
 
 
 if __name__ == '__main__':
