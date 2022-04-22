@@ -23,7 +23,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return "Hello. This is Angel Prayer."
+    return "Let's pray to Altitude Angel."
 
 
 if __name__ == '__main__':

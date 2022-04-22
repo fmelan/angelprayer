@@ -21,3 +21,20 @@ Then you can install all dependencies with the command:
 
 More details at [pip-tools](https://github.com/jazzband/pip-tools).
 
+## Run from CLI
+
+`uvicorn --port 8000 main:app`
+
+Now go to `http://localhost:8000`
+
+## Build and Run Docker Image
+
+Building the Docker image:
+
+`docker build --tag angelprayer-docker-test .`
+
+Running the image:
+
+`docker run -dp 3000:8000 angelprayer-docker-test`
+
+App should be available there: `http://localhost:3000`
