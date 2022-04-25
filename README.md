@@ -46,3 +46,8 @@ Running the image:
 `docker run -dp 3000:8000 angelprayer-docker-test`
 
 App should be available there: `http://localhost:3000`
+
+Alternatively you can start the app with docker-compose:
+
+`docker-compose up`
+
