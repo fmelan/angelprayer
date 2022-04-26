@@ -2,8 +2,9 @@ import json
 import unittest
 from unittest.mock import patch
 
-from auth_api import _access_api_call, AccessTokensRequest, test_auth_base_uri
+from auth_api import _access_api_call, AccessTokensRequest
 from errors import AngelError
+from settings import settings
 
 
 def access_token_json_response_f():
@@ -41,6 +42,7 @@ class TestAccessTokenAPI(unittest.TestCase):
             'state': 'state_a'
         }
         self.get_access_token_response = access_token_json_response_f
+        settings.auth_base_uri = 'test_uri'
 
     @patch('httpx.post')
     def test__access_api_call_success(self, post_mock):
@@ -55,7 +57,10 @@ class TestAccessTokenAPI(unittest.TestCase):
         resp = _access_api_call(self.valid_get_access_token_req, AccessTokensRequest)
 
         assert post_mock.called
-        post_mock.assert_called_once_with(f"{test_auth_base_uri}/oauth/v2/token",
+
+        # TODO test setting! Mockuju ten call, ale stejne pouziju smyslenou adresu, jak zmenim v ramci settings?
+
+        post_mock.assert_called_once_with(f"{settings.auth_base_uri}/oauth/v2/token",
                                           headers={'Content-Type': 'application/x-www-form-urlencoded'},
                                           data={'client_id': 'client1', 'client_secret': 'client1_secret',
                                                    'grant_type': 'client_credentials', 'scope': 'surveillance_api',
@@ -94,7 +99,7 @@ class TestAccessTokenAPI(unittest.TestCase):
             _access_api_call(self.valid_get_access_token_req, AccessTokensRequest)
 
         assert post_mock.called
-        post_mock.assert_called_once_with(f"{test_auth_base_uri}/oauth/v2/token",
+        post_mock.assert_called_once_with(f"{settings.auth_base_uri}/oauth/v2/token",
                                           headers={'Content-Type': 'application/x-www-form-urlencoded'},
                                           data={'client_id': 'client1', 'client_secret': 'client1_secret',
                                                    'grant_type': 'client_credentials', 'scope': 'surveillance_api',

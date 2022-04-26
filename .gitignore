@@ -130,3 +130,6 @@ dmypy.json
 
 # IDEA config
 .idea
+
+# Config from environment variables
+.env

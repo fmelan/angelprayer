@@ -7,10 +7,9 @@ from pydantic import BaseModel, ValidationError
 
 from errors import AngelError
 
-test_auth_base_uri = "https://auth.sit.altitudeangel.io"
-
-
 # Data Models
+from settings import settings
+
 
 class AccessTokensRequest(BaseModel):
     client_id: str
@@ -108,7 +107,7 @@ def _access_api_call(request_data, req_class):
         ae.status_code = 400
         raise ae
 
-    resp = httpx.post(f"{test_auth_base_uri}/oauth/v2/token", headers=headers, data=access_token_req.dict())
+    resp = httpx.post(f"{settings.auth_base_uri}/oauth/v2/token", headers=headers, data=access_token_req.dict())
 
     if resp.status_code != 200:
         err = AngelError(resp.text)

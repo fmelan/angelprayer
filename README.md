@@ -23,6 +23,12 @@ Then you can alternativelly install all dependencies with the command:
 
 More details at [pip-tools](https://github.com/jazzband/pip-tools).
 
+## Environment Setup
+
+The project configuration fields are defined by the [settings.py](.settings.py) file. 
+All fields present in the settings file can be set via environment variables `.env` file.
+Make a copy of the `.env.example` file and change to desired values.
+
 ## Running Tests
 
 In the project directory under virtual environment please run:
