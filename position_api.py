@@ -15,7 +15,9 @@ test_position_uri = "https://surveillance-api.sit.altitudeangel.io/v1/position-r
 class GeographicPosition(BaseModel):
     lat: float  # the latitude in decimal degrees
     lon: float  # the longitude in decimal degrees
-    accuracy: Optional[float]  # Accuracy of the position in meters. If not specified, accuracy is assumed to be the accuracy of the lat/long provided
+    # Accuracy of the position in meters. If not specified, accuracy is assumed to be
+    # the accuracy of the lat/long provided
+    accuracy: Optional[float]
     source: Optional[str]  # Indicates the source of the position data (e.g GPS)
     age: Optional[float]  # The age in seconds since this data was acquired
 
@@ -40,47 +42,67 @@ class Height(BaseModel):
 
 class Identifier(BaseModel):
     id: str  # The id value
-    type: Optional[str]  # Text string describing the type of identifier, (e.g. ICAO, IMEI, SerialNumber)
+    # Text string describing the type of identifier, (e.g. ICAO, IMEI, SerialNumber)
+    type: Optional[str]
 
 
 class Target(BaseModel):
     sourceId: Optional[str]  # The sensor's unique id for this target
-    type: Optional[str]  # The type of target detected in a urn format. One of "aa:target:aircraft" or "aa:target:drone"
-    confidence: Optional[int]  # The percentage confidence that the type has been identified correctly (1-100)
+    # The type of target detected in a urn format. One of "aa:target:aircraft"
+    # or "aa:target:drone"
+    type: Optional[str]
+    # The percentage confidence that the type has been identified correctly (1-100)
+    confidence: Optional[int]
     ids: Optional[List[Identifier]]  # Collection of known identifiers for this target
-    additionalInfo: Optional[str]  # JSON - Additional information about the target, e.g. make, model
+    # JSON - Additional information about the target, e.g. make, model
+    additionalInfo: Optional[str]
 
 
 class PositionData(BaseModel):
     id: str  # Uniquely identifies this specific position report by the sender
-    sourceTimeStamp: datetime  # Indicates when the position report was sent, according to the sensor clock, in UTC. # (IAT should be accounted for by the sensor)
+    # Indicates when the position report was sent, according to the sensor clock,
+    # in UTC. # (IAT should be accounted for by the sensor)
+    sourceTimeStamp: datetime
     position: GeographicPosition  # Contains the position of the detected object
     target: Optional[Target]  # Contains identification details of the detected object
-    altitudes: Optional[List[Height]]  # Contains one or more detected altitudes for the object
-    groundVelocity: Optional[GeographicVector]  # Contains data for the speed (in m/s) and track of the object.
-    trueAirspeed: Optional[GeographicVector]  # Contains information about the true airspeed (TAS) of the object
-    onGround: Optional[bool]  # True if the sensor considers the object to be on the ground
-    acceleration: Optional[GeographicVector]  # Contains acceleration information for the object
+    # Contains one or more detected altitudes for the object
+    altitudes: Optional[List[Height]]
+    # Contains data for the speed (in m/s) and track of the object.
+    groundVelocity: Optional[GeographicVector]
+    # Contains information about the true airspeed (TAS) of the object
+    trueAirspeed: Optional[GeographicVector]
+    # True if the sensor considers the object to be on the ground
+    onGround: Optional[bool]
+    # Contains acceleration information for the object
+    acceleration: Optional[GeographicVector]
     heading: Optional[float]  # Object heading in degrees
-    additionalInfo: Optional[str]  # JSON - Provides any additional sensor-specific information
+    # JSON - Provides any additional sensor-specific information
+    additionalInfo: Optional[str]
 
 
 class SensorPosition(BaseModel):
-    geographicPosition: Optional[GeographicPosition]  # The position of the sensor providing the positions
-    altitude: Optional[Height]  # The altitude of the sensor. For ground-based sensors, altitude datum should be MSL
-    heading: Optional[float]  # For directed sensors, the direction it is facing in degrees from north
-    angle: Optional[float]  # For directed sensors, the angle of the device in degrees from horizontal
+    # The position of the sensor providing the positions
+    geographicPosition: Optional[GeographicPosition]
+    # The altitude of the sensor. For ground-based sensors, altitude datum should be MSL
+    altitude: Optional[Height]
+    # For directed sensors, the direction it is facing in degrees from north
+    heading: Optional[float]
+    # For directed sensors, the angle of the device in degrees from horizontal
+    angle: Optional[float]
 
 
 class SensorState(BaseModel):
     id: str  # The locally unique identifier of the sensor providing the positions
     pressure: Optional[float]  # Current pressure in mb at the sensor's location
-    sensorPosition: Optional[SensorPosition]  # Provides up to date sensor position information if the sensor can move/rotate/etc.
-    additionalInfo: Optional[str]  # JSON - Provides any additional information about the current state of the sensor
+    # Provides up to date sensor position information if the sensor can move/rotate/etc.
+    sensorPosition: Optional[SensorPosition]
+    # JSON - Provides any additional information about the current state of the sensor
+    additionalInfo: Optional[str]
 
 
 class PositionReport(BaseModel):
-    sensor: Optional[SensorState]  # Metadata about the sensor device providing positions
+    # Metadata about the sensor device providing positions
+    sensor: Optional[SensorState]
     positions: List[PositionData]  # Collection of positions. Must not be empty
 
 
@@ -94,14 +116,19 @@ def send_position_report(access_token, position_report):
     A position report consists of the following key pieces of data:
 
     sensor metadata identifying the sensor for which data is submitted
-    One (or more) positions, which specify information about objects known, or visible, to the sensor
+    One (or more) positions, which specify information about objects known, or visible,
+    to the sensor
 
     :param access_token: access token obtained by using auth_api.py
     :param position_report: instance of the class PositionReport
     :return:
     """
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {access_token}'
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {access_token}",
     }
-    return httpx.post(test_position_uri, headers=headers, data=position_report.json(exclude_unset=True))
+    return httpx.post(
+        test_position_uri,
+        headers=headers,
+        data=position_report.json(exclude_unset=True),
+    )

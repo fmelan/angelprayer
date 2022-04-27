@@ -1,4 +1,7 @@
 # angelprayer
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Calling the Altitude Angel Surveillance API
 
 https://docs.altitudeangel.com/docs/surveillance-api
@@ -23,9 +26,21 @@ Then you can alternativelly install all dependencies with the command:
 
 More details at [pip-tools](https://github.com/jazzband/pip-tools).
 
+
+## Linting
+
+The project uses [flake8](https://github.com/PyCQA/flake8) and  [bandit](https://github.com/PyCQA/bandit).
+Formatting is done with [black](https://github.com/psf/black).
+
+**Setupping Git hooks**
+
+```
+ $ pre-commit install
+```
+
 ## Environment Setup
 
-The project configuration fields are defined by the [settings.py](.settings.py) file. 
+The project configuration fields are defined by the [settings.py](.settings.py) file.
 All fields present in the settings file can be set via environment variables `.env` file.
 Make a copy of the `.env.example` file and change to desired values.
 
@@ -56,4 +71,3 @@ App should be available there: `http://localhost:3000`
 Alternatively you can start the app with docker-compose:
 
 `docker-compose up`
-

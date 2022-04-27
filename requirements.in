@@ -3,3 +3,7 @@ httpx
 fastapi
 uvicorn[standard]
 python-dotenv
+black
+flake8-docstrings
+pre-commit
+bandit

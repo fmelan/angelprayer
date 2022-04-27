@@ -1,9 +1,5 @@
-import datetime
-
 from fastapi import FastAPI
 
-from position_api import PositionData, GeographicPosition, send_position_report, Target, Identifier, Height, \
-    GeographicVector, PositionReport
 from settings import settings
 
 app = FastAPI()
@@ -14,10 +10,9 @@ def read_root():
     return "Let's pray to Altitude Angel."
 
 
-if __name__ == '__main__':
-    # The access and refresh tokens should ideally be stored on the client to prevent the user having to authenticate
-    # repeatedly. How to store these is beyond the scope of this tutorial, but a client-side cookie, local storage
-    # etc could be used.
+if __name__ == "__main__":
+    # The access and refresh tokens should ideally be stored on the client to prevent
+    # the user having to authenticate repeatedly.
 
     # try:
     #     tokens = get_test_tokens()

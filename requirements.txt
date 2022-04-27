@@ -11,16 +11,36 @@ anyio==3.5.0
     #   watchgod
 asgiref==3.5.0
     # via uvicorn
+bandit==1.7.4
+    # via -r requirements.in
+black==22.3.0
+    # via -r requirements.in
 certifi==2021.10.8
     # via
     #   httpcore
     #   httpx
+cfgv==3.3.1
+    # via pre-commit
 charset-normalizer==2.0.12
     # via httpx
 click==8.1.2
-    # via uvicorn
+    # via
+    #   black
+    #   uvicorn
+distlib==0.3.4
+    # via virtualenv
 fastapi==0.75.2
     # via -r requirements.in
+filelock==3.6.0
+    # via virtualenv
+flake8==4.0.1
+    # via flake8-docstrings
+flake8-docstrings==1.6.0
+    # via -r requirements.in
+gitdb==4.0.9
+    # via gitpython
+gitpython==3.1.27
+    # via bandit
 h11==0.12.0
     # via
     #   httpcore
@@ -31,35 +51,76 @@ httptools==0.4.0
     # via uvicorn
 httpx==0.22.0
     # via -r requirements.in
+identify==2.5.0
+    # via pre-commit
 idna==3.3
     # via
     #   anyio
     #   rfc3986
+mccabe==0.6.1
+    # via flake8
+mypy-extensions==0.4.3
+    # via black
+nodeenv==1.6.0
+    # via pre-commit
+pathspec==0.9.0
+    # via black
+pbr==5.8.1
+    # via stevedore
+platformdirs==2.5.2
+    # via
+    #   black
+    #   virtualenv
+pre-commit==2.18.1
+    # via -r requirements.in
+pycodestyle==2.8.0
+    # via flake8
 pydantic==1.9.0
     # via
     #   -r requirements.in
     #   fastapi
+pydocstyle==6.1.1
+    # via flake8-docstrings
+pyflakes==2.4.0
+    # via flake8
 python-dotenv==0.20.0
     # via
     #   -r requirements.in
     #   uvicorn
 pyyaml==6.0
-    # via uvicorn
+    # via
+    #   bandit
+    #   pre-commit
+    #   uvicorn
 rfc3986[idna2008]==1.5.0
     # via httpx
+six==1.16.0
+    # via virtualenv
+smmap==5.0.0
+    # via gitdb
 sniffio==1.2.0
     # via
     #   anyio
     #   httpcore
     #   httpx
+snowballstemmer==2.2.0
+    # via pydocstyle
 starlette==0.17.1
     # via fastapi
+stevedore==3.5.0
+    # via bandit
+toml==0.10.2
+    # via pre-commit
+tomli==2.0.1
+    # via black
 typing-extensions==4.1.1
     # via pydantic
 uvicorn[standard]==0.17.6
     # via -r requirements.in
 uvloop==0.16.0
     # via uvicorn
+virtualenv==20.14.1
+    # via pre-commit
 watchgod==0.8.2
     # via uvicorn
 websockets==10.3
