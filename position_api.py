@@ -6,7 +6,7 @@ from typing import List, Optional
 import httpx
 from pydantic import BaseModel
 
-test_position_uri = "https://surveillance-api.sit.altitudeangel.io/v1/position-reports"
+from settings import settings
 
 
 # Data Models
@@ -128,7 +128,7 @@ def send_position_report(access_token, position_report):
         "Authorization": f"Bearer {access_token}",
     }
     return httpx.post(
-        test_position_uri,
+        settings.position_uri,
         headers=headers,
         data=position_report.json(exclude_unset=True),
     )

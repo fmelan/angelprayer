@@ -5,6 +5,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     auth_base_uri: str
+    position_uri: str
     client_id: str
     client_secret: str
     redirect_uri: str = "localhost"
