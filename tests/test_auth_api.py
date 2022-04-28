@@ -2,7 +2,7 @@ import json
 import unittest
 from unittest.mock import patch
 
-from auth_api import _access_api_call, AccessTokensRequest
+from apicalls.auth_api import _access_api_call, AccessTokensRequest
 from errors import AngelError
 from settings import settings
 
