@@ -29,10 +29,17 @@ More details at [pip-tools](https://github.com/jazzband/pip-tools).
 
 ## Linting
 
-The project uses [flake8](https://github.com/PyCQA/flake8) and  [bandit](https://github.com/PyCQA/bandit).
-Formatting is done with [black](https://github.com/psf/black).
+The project uses [flake8](https://github.com/PyCQA/flake8) and  [bandit](https://github.com/PyCQA/bandit)
+and curently it is intended to run the linting as part of pre-commit Git hook although the developer
+can run the linting manually.
+
+Formatting is done with [black](https://github.com/psf/black). [Integrating black with Pycharm](https://black.readthedocs.io/en/stable/integrations/editors.html#pycharm-intellij-idea) and
+thus running it automatically with each save of a file brings most pleasure.
+
 
 **Setupping Git hooks**
+
+Developer can setup the linting on each commit with:
 
 ```
  $ pre-commit install
