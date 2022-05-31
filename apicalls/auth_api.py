@@ -41,14 +41,20 @@ class RefreshAccessTokenRequest(BaseModel):
 # API Calls
 
 
-def get_access_token(client_id, client_secret, redirect_uri, device_id, state=None):
+def get_access_token(
+    client_id: str,
+    client_secret: str,
+    redirect_uri: str,
+    device_id: str,
+    state: str = None,
+) -> AccessTokensResponse:
     """
     Before this call, users must have pre-registered their local unique sensor IDs by
     creating a support ticket. Function will call API to obtain standard OAuth v2
     response with access_token and refresh_token. Both these tokens will be returned
     by the function. The access_token should be then used to communicate with the
     Surveillance API.
-    :return: tuple containing access_token and refresh_token
+    :return: instance of AccessTokensResponse
     """
     request_data = {
         "client_id": client_id,
